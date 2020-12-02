@@ -23,18 +23,36 @@ class App extends React.Component {
       {animal:'cat', name: 'Misifu'},
       {animal:'horse', name: 'Firulais'}
   ],
-  deletePet: (_name)=>{
-      const newPets = this.state.pets.filter((pet)=>{
-        return pet.name !== _name
-      })
-      this.setState({pets: newPets})
+  deletePet: (index)=>{
+      // const newPets = this.state.pets.filter((pet)=>{
+      //   return pet.name !== _name
+      // })
+      const copyOfPets = [...this.state.pets]
+      copyOfPets.splice(index, 1)
+      this.setState({pets: copyOfPets})
     },
-    addPet: (_pet)=>{
+    addPet: (event)=>{
         // this.setState({pets: [{animal:'dog', name: _pet}, ...this.state.pets]})
+        event.preventDefault()
         const copyOfPets = [...this.state.pets]
-        copyOfPets.unshift({animal:'dog', name: _pet})
+        copyOfPets.unshift(this.state.temporalNewAnimal)
         this.setState({pets: copyOfPets})
+        
+        
+    },
+
+    temporalNewAnimal: {animal: '', name: ''},
+
+    updateAnimals: (_name, _value) => {
+      const copyOfTemporalAnimal = {...this.state.temporalNewAnimal}
+      if(_name === 'animal'){
+        copyOfTemporalAnimal.animal = _value
+      } else if(_name === 'name'){
+        copyOfTemporalAnimal.name = _value
+      }
+      this.setState({temporalNewAnimal: copyOfTemporalAnimal})
     }
+
   }
 
   changeUsername = ()=>{
@@ -74,6 +92,8 @@ class App extends React.Component {
         pets={this.state.pets}
         deletePet={this.state.deletePet}
         addPet={this.state.addPet}
+        temporalNewAnimal={this.state.temporalNewAnimal}
+        updateAnimals={this.state.updateAnimals}
         />
 
       </div>
